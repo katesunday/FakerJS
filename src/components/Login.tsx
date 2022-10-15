@@ -11,6 +11,7 @@ import {
     Grid ,
     TextField
 } from "@mui/material";
+import {LoginTC} from "../reducers/authReducer";
 
 type FormikErrorType = {
     email?: string
@@ -49,13 +50,13 @@ export const Login = () => {
             return errors;
         } ,
         onSubmit: async (values:FormikValuesType,formikHelpers:FormikHelpers<FormikValuesType>) => {
-            // const action = await dispatch(loginTC(values))
-            // if(loginTC.rejected.match(action)){
-            //     if(action.payload?.fieldsErrors){
-            //         const error = action.payload.fieldsErrors
-            //         formikHelpers.setFieldError(error.field,error.error)
-            //     }
-            // }
+            const action = await dispatch(LoginTC(values))
+            if(LoginTC.rejected.match(action)){
+                if(action.payload?.fieldsErrors){
+                    const error = action.payload.fieldsErrors
+                    formikHelpers.setFieldError(error.field,error.error)
+                }
+            }
             formik.resetForm()
         } ,
     })

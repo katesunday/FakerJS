@@ -9,14 +9,14 @@ import UsersList from "./components/UsersList";
 import {Login} from "./components/Login";
 
 function App() {
-    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-  const[users,setUsers] = useState<any>(null)
-    console.log(isLoggedIn)
-    useEffect(()=>{
-        createItem().then(res=>{
-            setUsers(res)
-        })
-    },[])
+  //   const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+  // const[users,setUsers] = useState<any>(null)
+  //   console.log(isLoggedIn)
+  //   useEffect(()=>{
+  //       createItem().then(res=>{
+  //           setUsers(res)
+  //       })
+  //   },[])
   return (
       <div>
           <Container fixed>
