@@ -1,13 +1,12 @@
 import {faker} from "@faker-js/faker";
-import * as fs from "fs";
-export type User = {
+export type UserType = {
     "id": number,
     "email": string,
     "first_name": string,
     "last_name": string,
     "avatar": string
 }
-export const USERS: User[] = [];
+export const USERS: UserType[] = [];
 
 const generatePersonsData = (numForId:number) => {
     while (numForId >= 0) {
@@ -20,9 +19,9 @@ const generatePersonsData = (numForId:number) => {
         });
         numForId--;
     }
-    return { "data": USERS }
+    return { USERS }
 };
-let dataObj = generatePersonsData(30);
+export const dataObj = generatePersonsData(30);
 
 //fs.writeFileSync('data.json', JSON.stringify(dataObj, null, '\t'));
 
