@@ -13,12 +13,12 @@ import {
 } from "@mui/material";
 import {LoginTC} from "../reducers/authReducer";
 
-type FormikErrorType = {
+ type FormikErrorType = {
     email?: string
     password?: string
     rememberMe?: boolean
 }
-type FormikValuesType = {
+ type FormikValuesType = {
     email: string
     password: string
     rememberMe: boolean
@@ -62,7 +62,7 @@ export const Login = () => {
     })
 
     if (isLoggedIn) {
-        return <Navigate to='/'/>
+        return <Navigate to='/users'/>
     }
     return <Grid container justifyContent={'center'}>
         <Grid item justifyContent={'center'}>

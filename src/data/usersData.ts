@@ -4,12 +4,12 @@ export type UserType = {
     "email": string,
     "first_name": string,
     "last_name": string,
-    "avatar": string
+    "avatar"?: string
 }
-export const USERS: UserType[] = [];
+export const USERS:UserType[] = [];
 
 const generatePersonsData = (numForId:number) => {
-    while (numForId >= 0) {
+    while (numForId !== 0) {
         USERS.push({
             id: numForId,
             first_name: faker.name.firstName() ,
@@ -19,9 +19,10 @@ const generatePersonsData = (numForId:number) => {
         });
         numForId--;
     }
-    return { USERS }
+    return  USERS
 };
 export const dataObj = generatePersonsData(30);
+console.log(dataObj)
 
 //fs.writeFileSync('data.json', JSON.stringify(dataObj, null, '\t'));
 

@@ -1,49 +1,76 @@
 import {createAsyncThunk , createSlice} from "@reduxjs/toolkit";
 import {endpoint} from "../mocks/handlers";
-import {USERS , UserType} from "../data/usersData";
+import {dataObj , UserType} from "../data/usersData";
 
-export const getUsersTC = createAsyncThunk('users/getUsers' , async (param,ThunkAPI)=>{
+export const getUsersTC = createAsyncThunk('users/getUsers' , async (param , ThunkAPI) => {
     try {
-        const response = await fetch(`${endpoint}/users`,{
-            method:'GET'
+        const response = await fetch(`${endpoint}/users` , {
+            method: 'GET' ,
         })
         return response.json()
-    }
-    catch (e) {
+    } catch (e) {
         console.log(e)
     }
 })
 
-export const deleteUsersTC = createAsyncThunk('users/deleteUser' , async (param:{id:number},ThunkAPI)=>{
+export const deleteUsersTC = createAsyncThunk('users/deleteUser' , async (param: { id: number } , ThunkAPI) => {
     try {
-        const response = await fetch(`${endpoint}/users/:${param.id}`,{
-            method:'DELETE'
+        const response = await fetch(`${endpoint}/users/:${param.id}` , {
+            method: 'DELETE' ,
+            body: JSON.stringify(dataObj)
         })
-        return {id:param.id}
+        return {id: param.id}
+    } catch (e) {
+        console.log(e)
     }
-    catch (e) {
+})
+
+export const modifyUserTC = createAsyncThunk('users/modifyUser' , async (param: UserType , thunkAPI) => {
+    try {
+        const response = await fetch(`${endpoint}/users/:${param.id}` , {
+            method: 'PATCH' ,
+            body: JSON.stringify(dataObj)
+        })
+        console.log(param)
+        return param
+    } catch (e) {
+        console.log(e)
+    }
+})
+export const addNewUserTC = createAsyncThunk('users/addUser' , async (param: UserType , thunkAPI) => {
+    try {
+        const response = await fetch(`${endpoint}/users/addUser` , {
+            method: 'PUT' ,
+            body: JSON.stringify(dataObj)
+        })
+        console.log(param)
+        return param
+    } catch (e) {
         console.log(e)
     }
 })
 
 const slice = createSlice({
-    name:'users',
-    initialState:[] as UserType[],
-    reducers:{},
+    name: 'users' ,
+    initialState: [] as UserType[] ,
+    reducers: {} ,
     extraReducers: (builder) => {
-        builder.addCase(getUsersTC.fulfilled,(state,action)=>{
-            return USERS
+        builder.addCase(getUsersTC.fulfilled , (state , action) => {
+            return dataObj
         })
-        builder.addCase(deleteUsersTC.fulfilled,(state,action)=>{
-            if(action.payload){
-                const index = state.findIndex(el=>el.id !== action.payload?.id)
-                if (index > -1) {
-                    const users = state.slice(index , 1)
-                    state = users
-                }
+        builder.addCase(deleteUsersTC.fulfilled , (state , action) => {
+            return state.filter(el => el.id !== action.payload?.id)
+        })
+        builder.addCase(modifyUserTC.fulfilled , (state , action) => {
+            if (action.payload) {
+                const {id , first_name , last_name , email} = action.payload
+                return state.map((el) => {
+                    return el.id === id ? {...el , first_name , last_name , email} : el
+                })
             }
-            console.log(state)
-
+        })
+        builder.addCase(addNewUserTC.fulfilled,(state,action)=>{
+         action.payload && state.unshift({...action.payload})
         })
     }
 })
