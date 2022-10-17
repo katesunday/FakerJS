@@ -23,7 +23,7 @@ export const LoginTC = createAsyncThunk<undefined , LoginParamsType , { rejectVa
 
 const slice = createSlice({
     name: 'auth' ,
-    initialState: {isLoggedIn: false} ,
+    initialState: {isLoggedIn: true} ,
     reducers: {} ,
     extraReducers: (builder) => {
         builder.addCase(LoginTC.fulfilled , (state , action) => {

@@ -1,6 +1,6 @@
 import React , {ChangeEvent , useEffect , useState} from 'react';
 import {useAppDispatch , useAppSelector} from "../store/store";
-import {Navigate} from "react-router-dom";
+import {Navigate , useParams} from "react-router-dom";
 import {getUsersTC} from "../reducers/usersReducer";
 import {
     Button ,
@@ -26,7 +26,10 @@ const UsersList = () => {
     const users = useAppSelector(state => state.users)
     const status = useAppSelector(state => state.app.status)
 
-    console.log(users)
+    const {userId} = useParams()
+    const userFromParams = userId && users.find(el=>el.id===+userId);
+    console.log(userId)
+    
     const newUser: UserType = {
         id: users.length + 1 ,
         first_name: '' ,
@@ -88,6 +91,7 @@ const UsersList = () => {
                         })}
                     </TableBody>
                 </Table>
+                {userFromParams &&  <ModalUserItem user={userFromParams} openModal={openModal} handleClose={handleClose}/>}
                 <Pagination count={count} page={page} onChange={handleChange}
                             variant="outlined" shape="rounded"/>
                 {status === 'loading' && <LinearProgress/>}
