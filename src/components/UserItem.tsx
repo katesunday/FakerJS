@@ -19,7 +19,9 @@ const UserItem = (props: UserItemPropsType) => {
         dispatch(deleteUsersTC({id}))
     }
     const [openModal , setOpenModal] = useState(false);
-    const handleOpen = () => setOpenModal(true);
+    const handleOpen = () => {
+        setOpenModal(true);
+    }
     const handleClose = () => setOpenModal(false);
 
 

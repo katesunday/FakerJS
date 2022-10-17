@@ -27,9 +27,9 @@ const UsersList = () => {
     const status = useAppSelector(state => state.app.status)
 
     const {userId} = useParams()
-    const userFromParams = userId && users.find(el=>el.id===+userId);
+    const userFromParams = userId && users.find(el => el.id === +userId);
     console.log(userId)
-    
+
     const newUser: UserType = {
         id: users.length + 1 ,
         first_name: '' ,
@@ -51,11 +51,13 @@ const UsersList = () => {
 
     useEffect(() => {
         dispatch(getUsersTC())
-    } , [dispatch])
+    } , [dispatch , userId])
+
 
     if (!isLoggedIn) {
         return <Navigate to='/login'/>
     }
+
     return (
         <Paper>
             <div style={{display: "flex" , justifyContent: 'space-between'}}>
@@ -91,7 +93,8 @@ const UsersList = () => {
                         })}
                     </TableBody>
                 </Table>
-                {userFromParams &&  <ModalUserItem user={userFromParams} openModal={openModal} handleClose={handleClose}/>}
+                {userFromParams &&
+                    <ModalUserItem user={userFromParams} openModal={openModal} handleClose={handleClose}/>}
                 <Pagination count={count} page={page} onChange={handleChange}
                             variant="outlined" shape="rounded"/>
                 {status === 'loading' && <LinearProgress/>}

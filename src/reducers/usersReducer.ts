@@ -16,6 +16,19 @@ export const getUsersTC = createAsyncThunk('users/getUsers' , async (param , {di
     }
 })
 
+export const getUserByIDTC = createAsyncThunk('users/getUserByID' , async (param: { id: number } , {dispatch}) => {
+    dispatch(setAppStatusAC({status: 'loading'}))
+    try {
+        const response = await fetch(`${endpoint}/users/:${param.id}` , {
+            method: 'GET' ,
+        })
+        dispatch(setAppStatusAC({status: 'succeeded'}))
+        return {id: param.id}
+    } catch (e) {
+        console.log(e)
+    }
+})
+
 export const deleteUsersTC = createAsyncThunk('users/deleteUser' , async (param: { id: number } , {dispatch}) => {
     dispatch(setAppStatusAC({status: 'loading'}))
     try {
@@ -64,6 +77,9 @@ const slice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(getUsersTC.fulfilled , (state , action) => {
             return dataObj
+        })
+        builder.addCase(getUserByIDTC.fulfilled,(state,action)=>{
+             state.find(el=>el.id===action.payload?.id)
         })
         builder.addCase(deleteUsersTC.fulfilled , (state , action) => {
             return state.filter(el => el.id !== action.payload?.id)
