@@ -4,10 +4,12 @@ import thunk , {ThunkDispatch} from "redux-thunk";
 import { configureStore } from "@reduxjs/toolkit";
 import {usersReducer} from "../reducers/usersReducer";
 import {authReducer} from "../reducers/authReducer";
+import { appReducer } from "../reducers/appReducer";
 
 const rootReducer = combineReducers({
     users: usersReducer ,
-    auth: authReducer
+    auth: authReducer,
+    app: appReducer
 })
 export type AppRootStateType = ReturnType<typeof rootReducer>
 export const useAppSelector: TypedUseSelectorHook<AppRootStateType> = useSelector

@@ -1,8 +1,18 @@
 import React , {ChangeEvent , useEffect , useState} from 'react';
 import {useAppDispatch , useAppSelector} from "../store/store";
-import {Navigate , useParams} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {getUsersTC} from "../reducers/usersReducer";
-import {Button , Pagination , Paper , Table , TableBody , TableCell , TableContainer , TableRow} from "@mui/material";
+import {
+    Button ,
+    LinearProgress ,
+    Pagination ,
+    Paper ,
+    Table ,
+    TableBody ,
+    TableCell ,
+    TableContainer ,
+    TableRow
+} from "@mui/material";
 import UserItem from "./UserItem";
 import {UserType} from "../data/usersData";
 import ModalUserItem from "./ModalUserItem";
@@ -14,6 +24,8 @@ const UsersList = () => {
 
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const users = useAppSelector(state => state.users)
+    const status = useAppSelector(state => state.app.status)
+
     console.log(users)
     const newUser: UserType = {
         id: users.length + 1 ,
@@ -29,7 +41,7 @@ const UsersList = () => {
     const PER_PAGE = 10;
     const count = Math.ceil(users.length / PER_PAGE);
     const _DATA = usePagination(users , PER_PAGE);
-    const handleChange = (e:ChangeEvent<unknown> , p:number) => {
+    const handleChange = (e: ChangeEvent<unknown> , p: number) => {
         setPage(p);
         _DATA.jump(p);
     };
@@ -78,6 +90,7 @@ const UsersList = () => {
                 </Table>
                 <Pagination count={count} page={page} onChange={handleChange}
                             variant="outlined" shape="rounded"/>
+                {status === 'loading' && <LinearProgress/>}
             </TableContainer>
 
         </Paper>

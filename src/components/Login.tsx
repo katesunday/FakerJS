@@ -8,10 +8,11 @@ import {
     FormControlLabel ,
     FormGroup ,
     FormLabel ,
-    Grid ,
+    Grid , LinearProgress ,
     TextField
 } from "@mui/material";
 import {LoginTC} from "../reducers/authReducer";
+import React from "react";
 
  type FormikErrorType = {
     email?: string
@@ -27,6 +28,7 @@ import {LoginTC} from "../reducers/authReducer";
 export const Login = () => {
     const dispatch = useAppDispatch()
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
+    const status = useAppSelector(state => state.app.status)
 
     const formik = useFormik({
         initialValues: {
@@ -69,18 +71,13 @@ export const Login = () => {
             <form onSubmit={formik.handleSubmit}>
                 <FormControl>
                     <FormLabel>
-                        {/*<ErrorSnackbar/>*/}
-                        <p>or use common test account credentials:</p>
-                        <p>Email: free@samuraijs.com</p>
-                        <p>Password: free</p>
+                        <p>This is a simulation of login:</p>
+                        <p>Email: can be any.</p>
+                        <p>Password: can be any.</p>
                     </FormLabel>
                     <FormGroup>
                         <TextField label="Email" margin="normal"
                                    {...formik.getFieldProps('email')}
-                            // name='email'
-                            // onChange={formik.handleChange}
-                            // value={formik.values.email}
-                            //        onBlur={formik.handleBlur}
                         />
                         {formik.touched.email && formik.errors.email ?
                             <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
@@ -98,9 +95,10 @@ export const Login = () => {
                                                   {...formik.getFieldProps('rememberMe')}
                                               />}
                         />
-                        <Button type={'submit'} variant={'contained'} color={'primary'}>
+                        <Button type={'submit'} variant={'contained'} color={'primary'} disabled={status ==='loading'}>
                             Login
                         </Button>
+                        {status === 'loading' && <LinearProgress/>}
                     </FormGroup>
                 </FormControl>
             </form>

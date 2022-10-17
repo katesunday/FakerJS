@@ -1,9 +1,9 @@
 import React from 'react';
-import {Box , Button , FormControl , FormGroup , Modal , TextField , Typography} from "@mui/material";
+import {Box , Button , FormControl , FormGroup , LinearProgress , Modal , TextField} from "@mui/material";
 import {UserType} from "../data/usersData";
-import {FormikHelpers , useFormik} from "formik";
+import {useFormik} from "formik";
 import {addNewUserTC , modifyUserTC} from "../reducers/usersReducer";
-import {useAppDispatch} from "../store/store";
+import {useAppDispatch , useAppSelector} from "../store/store";
 
 type ModalUserItemPropsType = {
     user: UserType,
@@ -24,6 +24,8 @@ type FormikValuesType = {
 
 const ModalUserItem = ({user , openModal , handleClose , isNewUser}: ModalUserItemPropsType) => {
     const dispatch = useAppDispatch()
+    const status = useAppSelector(state => state.app.status)
+
     const styleModal = {
         position: 'absolute' as 'absolute' ,
         top: '50%' ,
@@ -35,6 +37,7 @@ const ModalUserItem = ({user , openModal , handleClose , isNewUser}: ModalUserIt
         boxShadow: 24 ,
         p: 4 ,
     };
+
     const formik = useFormik({
         initialValues: {
             firstName: user.first_name ,
@@ -53,7 +56,7 @@ const ModalUserItem = ({user , openModal , handleClose , isNewUser}: ModalUserIt
             }
             return errors;
         } ,
-        onSubmit: async (values: FormikValuesType , formikHelpers: FormikHelpers<FormikValuesType>) => {
+        onSubmit: async (values: FormikValuesType) => {
             let action = isNewUser? addNewUserTC : modifyUserTC;
                 await dispatch(action({
                 id: user.id ,
@@ -69,17 +72,15 @@ const ModalUserItem = ({user , openModal , handleClose , isNewUser}: ModalUserIt
         <Modal
             open={openModal}
             onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
         >
             <Box sx={styleModal}>
                 <form onSubmit={formik.handleSubmit}>
                     <FormControl>
-                        {isNewUser ? <span>Add new user:</span> : <span>Update user details:</span>}
+                        {isNewUser ? <b>Add new user:</b> : <span>Update user details:</span>}
 
                         <FormGroup>
                             {formik.touched.firstName && formik.errors.firstName ?
-                                <div style={{color: 'red'}}>{formik.errors.firstName}</div> : null}
+                                <div style={{color: 'red',fontSize:'13px'}}>{formik.errors.firstName}</div> : null}
                             <TextField label={'First name'} margin="normal"
                                        {...formik.getFieldProps('firstName')}
                             />
@@ -90,10 +91,11 @@ const ModalUserItem = ({user , openModal , handleClose , isNewUser}: ModalUserIt
                                        {...formik.getFieldProps('email')}
                             />
                             {formik.touched.email && formik.errors.email ?
-                                <div style={{color: 'red'}}>{formik.errors.email}</div> : null}
+                                <div style={{color: 'red',fontSize:'13px'}}>{formik.errors.email}</div> : null}
                             <Button type={'submit'} variant={'contained'} color={'primary'} size={'small'}>
                                 {isNewUser? 'Add': 'Save'}
                             </Button>
+                            {status === 'loading' && <LinearProgress/>}
                         </FormGroup>
                     </FormControl>
                 </form>
