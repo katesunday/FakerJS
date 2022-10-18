@@ -1,7 +1,7 @@
 import {rest} from 'msw';
 import {dataObj} from "../data/usersData";
 
-export const endpoint = "http://localhost:3000";
+export const endpoint = "http://localhost:3000" || 'https://katesunday.github.io/FakerJS';
 export const handlers = [
     rest.post(endpoint + '/login' , (req , res , ctx) => {
         return res(
