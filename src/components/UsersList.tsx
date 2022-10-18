@@ -27,7 +27,6 @@ const UsersList = () => {
 
   const { userId } = useParams();
   const userFromParams = userId && users.find((el) => el.id === +userId);
-  console.log(userId);
 
   const newUser: UserType = {
     id: users.length + 1,
