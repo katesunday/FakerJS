@@ -56,8 +56,9 @@ const UserItem = (props: UserItemPropsType) => {
                     aria-label="edit"
                     size="small"
                     sx={{mt: 0.2 , mb: 0.2 , display: "block" , width: 0}}
+                    onClick={handleOpen}
                 >
-                    <Edit onClick={handleOpen}/>
+                    <Edit />
                 </IconButton>
             </TableCell>
             <ModalUserItem

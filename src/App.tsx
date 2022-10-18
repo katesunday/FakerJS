@@ -12,7 +12,7 @@ function App() {
       <Container fixed>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/" element={<UsersList />} />
+          <Route path="/" element={<Login />} />
           <Route path="/users" element={<UsersList />} />
           <Route path="/users/:userId" element={<UsersList />} />
           <Route path="/404" element={<h1>404: PAGE NOT FOUND</h1>} />
